@@ -6,11 +6,64 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Prober Project</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <script type="text/javascript">
+            var settings={
+                "async": true,
+                "crossDomain": true,
+                "url": "https://web-ims.thomasmore.be/datadistribution/API/2.0/drones?format=json",
+                "method": "GET",
+                "dataType": 'json',
+                "header": {
+                    "authorization": "Basic aW1zOno1MTJtVDRKeVgwUExXZw==",
+                    "cache-control": "no-cache",
+                    "postman-token": "9d25c54e-589e-62be-2923-97592800ce66"
+                }
+            };
+            $.ajax(settings)
+                    .done(function(response){
+                        for (var x=0; x<response.length; x++){
+                        settings.url = response[x]['url'];
+                        $.ajax(settings).done(function(response_1){
+                           settings.url= 'https://web-ims.thomasmore.be/datadistribution/API/2.0/files?drone_id.is=' + response_1['id'] + '&format=json';
+                           $.ajax(settings).done(function(response_2){
+                               for (var y = 0; y < response_2.length; y++){
+                                   settings.url = 'https://web-ims.thomasmore.be/datadistribution/API/2.0/files/' + response_2[y]['id'] + '?format=json';
+                                   $.ajax(settings).done(function(response_3){
+                                       $("#tabel").append('<tr>'+
+                                               '<td>'+response_1.name+'</td>'+
+                                               '<td>'+response_1.mac_address+'</td>'+
+                                               '<td>'+response_3.id+'</td>'+
+                                               '<td>'+response_3.date_first_record+'</td>'+
+                                               '<td>'+response_3.date_last_record+'</td></tr>');
+                                   });
+                               };
+                           });
+                        });
+                        };
+            });
+            </script>
     </head>
     <body>
-        <div>TODO write content</div>
+        <style media="screen">
+            table,th,td{
+                border: 1px solid black;
+            }
+            </style>
+            <div>
+                <h1> Prober Project </h1>
+                <table id="tabel">
+                    <tr>
+                        <th>Naam drone</th>
+                        <th>Mac_adres drone</th>
+                        <th>Id file</th>
+                        <th>eerste record</th>
+                        <th>laaste record</th>
+                    </tr>
+                </table>
+            </div>
     </body>
 </html>
