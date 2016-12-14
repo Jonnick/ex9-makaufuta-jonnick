@@ -50,7 +50,9 @@ var Content = function (id, droneid, url, rssi, ref, mac, datetime, fileid) {
 };
 var dronesSettings = new Settings("/drones?format=json");
 
-var droneMem = [];
+dal.clearDrone();
+dal.clearFile();
+dal.clearContent();
 
 request(dronesSettings, function (error, response, dronesString) {
 
