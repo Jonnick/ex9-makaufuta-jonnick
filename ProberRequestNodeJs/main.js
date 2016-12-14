@@ -77,7 +77,20 @@ request(dronesSettings, function (error, response, dronesString) {
                         console.log(filesSettings);
                         request(filesSettings, function (error, response, filesString){
                             var files = JSON.parse(filesString);
-                                
+                            files.forEach(function (file){
+                                var fileSettings = new Settings("/files/" + file.id + "?format=json");
+                                request(fileSettings, function (error, response, fileString){
+                                    var file = JSON.parse(fileString);
+                                    //console.log(file);
+                                    dal.insertFile(new File(
+                                            file.id, 
+                                            file.contents,
+                                            file.contents_count, 
+                                            file.ref,
+                                            file.url,
+                                            file.date_first_record, 
+                                            file.date_last_record,
+                                            file.date_loaded));    
                                 
 			droneMem.push(new Drone(drone.name, drone.mac_address, drone.id, drone.date_first_record, drone.data_last_record));
 			console.log(droneMem);
