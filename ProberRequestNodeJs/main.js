@@ -26,6 +26,17 @@ var Drone = function (name, mac, files_count, date, id, location, file) {
         this.files = files;
 };
 
+var File = function (id, url, contents_count, date_last_record, date_loaded, ref, contents, date_first_record, droneid) {
+	this._id = id;
+        this.url = url;
+        this.contents_count = contents_count;
+        this.date_last_record = date_last_record;
+	this.date_loaded = date_loaded;
+        this.ref = ref;
+        this.contents = contents;
+        this.date_first_record = date_first_record;
+        this.droneid = droneid;
+};
 var dronesSettings = new Settings("/drones?format=json");
 
 var droneMem = [];
