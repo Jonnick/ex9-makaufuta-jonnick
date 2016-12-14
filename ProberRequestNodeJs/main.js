@@ -37,6 +37,17 @@ var File = function (id, url, contents_count, date_last_record, date_loaded, ref
         this.date_first_record = date_first_record;
         this.droneid = droneid;
 };
+
+var Content = function (id, droneid, url, rssi, ref, mac, datetime, fileid) {
+	this._id = id;
+        this.droneid = droneid;
+        this.url = url;
+        this.rssi = rssi;
+        this.ref = ref;
+	this.mac = mac;
+	this.datetime = datetime;
+        this.fileid = fileid;
+};
 var dronesSettings = new Settings("/drones?format=json");
 
 var droneMem = [];
