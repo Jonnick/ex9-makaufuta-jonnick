@@ -59,7 +59,7 @@ request(dronesSettings, function (error, response, dronesString) {
 	/*console.log(drones);
 	console.log("***************************************************************************");*/
 	drones.forEach(function (drone) {
-		var droneSettings = new Settings("/drones/" + drone.id + "?format=json")
+		var droneSettings = new Settings("/drones/" + drone.id + "?format=json");
 		request(droneSettings, function (error, response, droneString) {
 			var drone = JSON.parse(droneString);
                         dal.insertDrone(new Drone(
