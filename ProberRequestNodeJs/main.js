@@ -71,6 +71,14 @@ request(dronesSettings, function (error, response, dronesString) {
                                 drone.files_count,
                                 drone.last_packet_date));
                                 
+                                
+                 var filesSettings = new Settings("/files?drone_id.is=" + drone.id + "&format=json&date_loaded.greaterOrEqual=2016-12-07T12:00:00");
+                        ///files?drone_id.is=cc3f2b0604a543399edd0d579447513f&date_loaded.greaterOrEqual=2016-10-13T16:40:05.255Z&format=json
+                        console.log(filesSettings);
+                        request(filesSettings, function (error, response, filesString){
+                            var files = JSON.parse(filesString);
+                                
+                                
 			droneMem.push(new Drone(drone.name, drone.mac_address, drone.id, drone.date_first_record, drone.data_last_record));
 			console.log(droneMem);
 			console.log("***************************************************************************");
