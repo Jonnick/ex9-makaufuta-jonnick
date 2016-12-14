@@ -1,6 +1,6 @@
 // lucs@sabayon ~/tmp/ProberRequestNodeJs $ npm install --save request
 var request = require("request");
-
+var dal = require('./storage.js');
 // http://stackoverflow.com/questions/10888610/ignore-invalid-self-signed-ssl-certificate-in-node-js-with-https-request
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
@@ -16,9 +16,14 @@ var Settings = function (url) {
 	};
 };
 
-var Drone = function (name, mac) {
+var Drone = function (name, mac, files_count, date, id, location, file) {
 	this.name = name;
 	this.mac = mac;
+        this._id = id;
+        this.files_count = files_count;
+        this.date = date;
+        this.location = location;
+        this.files = files;
 };
 
 var dronesSettings = new Settings("/drones?format=json");
