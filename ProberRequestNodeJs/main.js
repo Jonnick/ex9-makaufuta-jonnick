@@ -90,13 +90,37 @@ request(dronesSettings, function (error, response, dronesString) {
                                             file.url,
                                             file.date_first_record, 
                                             file.date_last_record,
-                                            file.date_loaded));    
-                                
-			droneMem.push(new Drone(drone.name, drone.mac_address, drone.id, drone.date_first_record, drone.data_last_record));
-			console.log(droneMem);
-			console.log("***************************************************************************");
+                                            file.date_loaded,
+                                            drone.id));
+                                            
+                                    var contentsSettings = new Settings("/files/" + file.id + "/contents?format=json");
+                                    request(contentsSettings, function (error, response, contentsString){
+                                        var contents = JSON.parse(contentsString);
+                                        /*console.log(contents);
+                                        console.log("***************************************************************************");*/
+                                        contents.forEach(function (content){
+                                           var contentSettings = new Settings("/files/" + file.id + "/contents/"+content.id+"?format=json");
+                                           request(contentSettings, function (error, response, contentString){
+                                               var content = JSON.parse(contentString);
+                                               //console.log(content);
+                                               dal.insertContent(new Content(
+                                                       content.id,
+                                                       content.url,
+                                                       content.datetime,
+                                                       content.mac_address,
+                                                       content.rssi,
+                                                       content.ref,
+                                                       file.id,
+                                                       drone.id));
+                                           });
+                                        });
+                                });
+                            });
+                        });
 		});
 	});
 });
+});
+
 
 console.log("Hello World!");
