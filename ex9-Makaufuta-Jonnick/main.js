@@ -19,3 +19,6 @@ var validationLocations = require('./validateLocations.js');
 //availleble
 var dalAanwezig = require('./storageAanwezigheden.js');
 var validationAanwezigheden = require('./validateAanwezigheden.js');
+
+//webserver variabele aanmaken
+var app = express();
