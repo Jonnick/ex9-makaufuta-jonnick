@@ -32,8 +32,42 @@ app.use(parser.json());
 app.get('/aanwezigheden', function(request, response){
     dalAanwezig.AllAanwezigheden(function(err, aanwezig){
         if(err){
-            throw err; // gekeken bij jelle
+            throw err;
         }
         response.send(aanwezig);
+    });
+});
+
+//opvangen van GET op /aanwezigheden/:id
+app.get('/aanwezigheden/:id', function(request, response){
+    dalAanwezig.findAanwezigheden(request.params.id, function(err, aanwezig){
+        if(aanwezig){
+        response.send(aanwezig);
+        }else{
+            err;
+        }
+    });
+});
+
+//opvangen van POST op /aanwezigheden
+app.post("/aanwezigheden", function(request, response){
+    //data toegekend aan aanwezig variabele
+    //enkel opgevuld als het JSON formaat is.
+    var people =request.body;
+    //Bestaan van velden validate
+    var errors = validationAanwezigheden.fieldsNotEmpty(people,"name_drone", "name_location", "aantal", "uur", "ID");
+    //functie om error te push
+    if (errors){
+        response.status(400).send({
+            msg: "U moet de velden juist invullen: " + errors.concat()       
+        });
+        return;
+    }
+    //bestaan van velden in de bewaarplaats
+    dalAanwezig.saveAanwezigheden(people, function(err, mensen){
+        if(err){
+            throw err;
+        }
+        response.send(mensen);
     });
 });
