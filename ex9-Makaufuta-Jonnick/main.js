@@ -32,8 +32,8 @@ app.use(parser.json());
 app.get('/aanwezigheden', function(request, response){
     dalAanwezig.AllAanwezigheden(function(err, aanwezig){
         if(err){
-            then err;
+            throw err; // gekeken bij jelle
         }
-        get.send(aanwezig);
+        response.send(aanwezig);
     });
 });
