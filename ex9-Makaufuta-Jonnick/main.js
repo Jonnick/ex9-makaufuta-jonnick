@@ -25,3 +25,15 @@ var app = express();
 
 //json formaat
 app.use(parser.json());
+
+//hier zullen we werken op availleble
+
+//opvangen van GET op /aanwezigheden
+app.get('/aanwezigheden', function(request, response){
+    dalAanwezig.AllAanwezigheden(function(err, aanwezig){
+        if(err){
+            then err;
+        }
+        response.send(aanwezig);
+    });
+});
