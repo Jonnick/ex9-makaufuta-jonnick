@@ -26,6 +26,76 @@ var app = express();
 //json formaat
 app.use(parser.json());
 
+----
+
+//hier werken we op locatie
+
+//opvangen van GET op /locations
+app.get('/locations', function(request, response){
+    dalLocation.AllLocations(function(err, location){
+        if(err){
+            throw err;
+        }
+        response.send(location);
+    });
+});
+
+//opvangen van GET op /locations/:name_drone
+app.get('/locations/:id', function(request, response){
+    dalLocation.findLocations(request.params.id, function(err, location){
+        if(location){
+        response.send(location);
+        }else{
+            err;
+        }
+    });
+});
+
+//opvangen van POST op /locations
+app.post("/locations", function(request, response){
+    //data toegekend aan locatie variabele
+    //enkel opgevuld als het JSON formaat is.
+    var locatie =request.body;
+    //Bestaan van velden validate
+    var errors = validationLocations.fieldsNotEmpty(locatie,"name_drone", "name_location", "mac_address_drone", "beschrijving");
+    //functie om error te push
+    if (errors){
+        response.status(400).send({
+            msg: "De Volgende velden zijn fout of verplicht: " + errors.concat()       
+        });
+        return;
+    }
+    //bestaan van velden in de bewaarplaats
+    dalLocation.saveLocations(locatie, function(err, locatie){
+        if(err){
+            throw err;
+        }
+        response.send(locatie);
+    });
+});
+
+//locations/:id
+app.put("locations/:id", function (request, response){
+    var locatie = request.body;
+    //bestaan van velden validate
+    var errors = validationLocations.fieldsNotEmpty(locatie,"name_drone", "name_location", "mac_address_drone", "beschrijving");
+    //functie om error te push
+    if (errors){
+        response.status(400).send({
+            msg: "De Volgende velden zijn fout of verplicht: " + errors.concat()       
+        });
+        return;
+    }
+     //updaten velden in de bewaarplaats
+    dalLocation.updateLocations(request.params.id,locatie, function(err, locatie){
+        if(err){
+            throw err;
+        }
+        response.send(locatie);
+    });
+});
+
+----
 //hier zullen we werken op availleble
 
 //opvangen van GET op /aanwezigheden
