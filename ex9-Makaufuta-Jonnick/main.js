@@ -22,3 +22,6 @@ var validationAanwezigheden = require('./validateAanwezigheden.js');
 
 //webserver variabele aanmaken
 var app = express();
+
+//json formaat
+app.use(parser.json());
