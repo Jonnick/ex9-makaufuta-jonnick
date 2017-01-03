@@ -34,6 +34,6 @@ app.get('/aanwezigheden', function(request, response){
         if(err){
             then err;
         }
-        response.send(aanwezig);
+        get.send(aanwezig);
     });
 });
