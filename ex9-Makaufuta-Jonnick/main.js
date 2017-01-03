@@ -64,10 +64,59 @@ app.post("/aanwezigheden", function(request, response){
         return;
     }
     //bestaan van velden in de bewaarplaats
-    dalAanwezig.saveAanwezigheden(people, function(err, mensen){
+    dalAanwezig.saveAanwezigheden(people, function(err, people){
         if(err){
             throw err;
         }
-        response.send(mensen);
+        response.send(people);
     });
 });
+
+//hier zullen we op movement werken
+
+//opvangen van GET op /bewegingen
+app.get('/bewegingen', function(request, response){
+    dalBeweging.AllBewegingen(function(err, beweging){
+        if(err){
+            throw err;
+        }
+        response.send(beweging);
+    });
+});
+
+//opvangen van GET op /aanwezigheden/:id
+app.get('/bewegingen/:id', function(request, response){
+    dalBeweging.findBewegingen(request.params.id, function(err, beweging){
+        if(beweging){
+        response.send(beweging);
+        }else{
+            err;
+        }
+    });
+});
+
+//opvangen van POST op /bewegingen
+app.post("/bewegingen", function(request, response){
+    //data toegekend aan beweging variabele
+    //enkel opgevuld als het JSON formaat is.
+    var movement =request.body;
+    //Bestaan van velden validate
+    var errors = validationBewegingen.fieldsNotEmpty(movement,"movement", "begin_location", "end_location", "duur", "beweging_id", "weer");
+    //functie om error te push
+    if (errors){
+        response.status(400).send({
+            msg: "De Volgende velden zijn fout of verplicht: " + errors.concat()       
+        });
+        return;
+    }
+    //bestaan van velden in de bewaarplaats
+    dalBeweging.saveBewegingen(movement, function(err, movement){
+        if(err){
+            throw err;
+        }
+        response.send(movement);
+    });
+});
+
+
+
