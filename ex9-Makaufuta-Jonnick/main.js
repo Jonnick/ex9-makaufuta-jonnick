@@ -26,8 +26,6 @@ var app = express();
 //json formaat
 app.use(parser.json());
 
-----
-
 //hier werken we op locatie
 
 //opvangen van GET op /locations
@@ -95,7 +93,6 @@ app.put("locations/:id", function (request, response){
     });
 });
 
-----
 //hier zullen we werken op availleble
 
 //opvangen van GET op /aanwezigheden
